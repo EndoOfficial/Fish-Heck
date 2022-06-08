@@ -7,8 +7,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 10f;
-    private Vector2 _direction;
-    protected Rigidbody _rigidbody;
+    private Vector3 _direction;
+    public Rigidbody _rigidbody;
 
     private void OnEnable()
     {
@@ -21,8 +21,10 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnSwipeMove(Vector2 MovePosition, Vector2 MoveDirestion, float MoveSpeed, int TouchCount)
     {
-        _direction = Vector2.left;
+        _direction = Vector3.forward;
+        Debug.Log("here");
     }
+
     private void FixedUpdate()
     {
         //gives the object speed
