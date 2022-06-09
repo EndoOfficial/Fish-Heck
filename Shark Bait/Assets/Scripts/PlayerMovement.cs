@@ -13,18 +13,24 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.OnSwipeMove += OnSwipeMove;
+        GameEvents.OnSwipeEnd += OnSwipeEnd;
     }
 
     private void OnDisable()
     {
         GameEvents.OnSwipeMove -= OnSwipeMove;
+        GameEvents.OnSwipeEnd -= OnSwipeEnd;
     }
+
     private void OnSwipeMove(Vector2 MovePosition, Vector2 MoveDirestion, float MoveSpeed, int TouchCount)
     {
         _direction = Vector3.forward;
         Debug.Log("here");
     }
-
+    private void OnSwipeEnd(Vector2 MovePosition, Vector2 MoveDirestion, float MoveSpeed, int TouchCount)
+    {
+        _direction = Vector3.back;
+    }
     private void FixedUpdate()
     {
         //gives the object speed
