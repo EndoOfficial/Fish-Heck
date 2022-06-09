@@ -6,9 +6,12 @@ using UnityEngine;
 //use events to access the touchinput and then use them to tigger vector 3 movement
 public class PlayerMovement : MonoBehaviour
 {
+
     public float speed = 10f;
     private Vector3 _direction;
     public Rigidbody _rigidbody;
+    private Vector2 startPosition;
+    private Vector2 endPosition;
 
     private void OnEnable()
     {
@@ -24,12 +27,29 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnSwipeMove(Vector2 MovePosition, Vector2 MoveDirestion, float MoveSpeed, int TouchCount)
     {
-        _direction = Vector3.forward;
-        Debug.Log("here");
+        startPosition = MovePosition;
     }
     private void OnSwipeEnd(Vector2 MovePosition, Vector2 MoveDirestion, float MoveSpeed, int TouchCount)
     {
-        _direction = Vector3.back;
+        endPosition = MovePosition;
+        if (Vector2.Distance(startPosition, endPosition) > 0)
+        {
+            MoveRight();
+        }
+        if (Vector2.Distance(startPosition, endPosition) < 0)
+        {
+            MoveLeft();
+        }
+    }
+    private void MoveRight()
+    { //send the ball diagonally right up, then fall
+        _direction = new Vector3(1, 0, 1);
+        StartCoroutine(FallTimer());
+    }
+    private void MoveLeft()
+    { //send the ball diagonally left up, then fall
+        _direction = new Vector3(-1, 0, 1);
+        StartCoroutine(FallTimer());
     }
     private void FixedUpdate()
     {
@@ -38,5 +58,11 @@ public class PlayerMovement : MonoBehaviour
         {
             _rigidbody.AddForce(_direction * speed);
         }
+    }
+    private IEnumerator FallTimer()
+    { //timer to fall
+        yield return new WaitForSeconds(0.5f);
+        _rigidbody.AddForce(_direction * speed * 0);
+        _direction = new Vector3(0,0,-2);
     }
 }
