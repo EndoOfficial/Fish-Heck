@@ -7,62 +7,30 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
-    public float speed = 10f;
-    private Vector3 _direction;
+    public float speed;
     public Rigidbody _rigidbody;
-    private Vector2 startPosition;
-    private Vector2 endPosition;
+    private Vector3 vctr;
 
     private void OnEnable()
     {
-        GameEvents.OnSwipeMove += OnSwipeMove;
         GameEvents.OnSwipeEnd += OnSwipeEnd;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnSwipeMove -= OnSwipeMove;
         GameEvents.OnSwipeEnd -= OnSwipeEnd;
     }
 
-    private void OnSwipeMove(Vector2 MovePosition, Vector2 MoveDirestion, float MoveSpeed, int TouchCount)
+    private void OnSwipeEnd(Vector2 MovePosition, Vector2 MoveDirection, float MoveSpeed, int TouchCount)
     {
-        startPosition = MovePosition;
+        _rigidbody.velocity = Vector3.zero;
+        vctr = MoveDirection;
+        vctr.z = vctr.y;
+        vctr.y = 0;
+        _rigidbody.AddForce(vctr * speed);
     }
-    private void OnSwipeEnd(Vector2 MovePosition, Vector2 MoveDirestion, float MoveSpeed, int TouchCount)
+    private void Update()
     {
-        endPosition = MovePosition;
-        if (Vector2.Distance(startPosition, endPosition) > 0)
-        {
-            MoveRight();
-        }
-        if (Vector2.Distance(startPosition, endPosition) < 0)
-        {
-            MoveLeft();
-        }
-    }
-    private void MoveRight()
-    { //send the ball diagonally right up, then fall
-        _direction = new Vector3(1, 0, 1);
-        StartCoroutine(FallTimer());
-    }
-    private void MoveLeft()
-    { //send the ball diagonally left up, then fall
-        _direction = new Vector3(-1, 0, 1);
-        StartCoroutine(FallTimer());
-    }
-    private void FixedUpdate()
-    {
-        //gives the object speed
-        if (_direction.sqrMagnitude != 0)
-        {
-            _rigidbody.AddForce(_direction * speed);
-        }
-    }
-    private IEnumerator FallTimer()
-    { //timer to fall
-        yield return new WaitForSeconds(0.5f);
-        _rigidbody.AddForce(_direction * speed * 0);
-        _direction = new Vector3(0,0,-2);
+        _rigidbody.AddForce(Vector3.down);
     }
 }
