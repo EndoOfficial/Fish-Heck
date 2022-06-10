@@ -9,4 +9,5 @@ public static class GameEvents
     public static Action<Vector2, Vector2, float ,int> OnSwipeMove; //movePosition, moveDirection, moveSpeed, touchCount
     public static Action<Vector2, Vector2, float, int> OnSwipeEnd; //endPosition, moveSpeed, touchCount
     public static Action<RaycastHit> OnFishHit; //hitinfo
+    public static Action<Coin> CoinScore; //Player touches coin
 }
