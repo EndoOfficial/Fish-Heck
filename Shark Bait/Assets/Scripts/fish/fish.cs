@@ -2,20 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class fish : MonoBehaviour
+public class Fish : MonoBehaviour
 {
-    private void OnEnable()
+    public Fish fishHead;
+    public Fish fishTail;
+       
+    public void FishCut()
     {
-        GameEvents.OnFishHit += onFishHit;
-    }
-    private void OnDisable()
-    {
-
-        GameEvents.OnFishHit -= onFishHit;
-    }
-
-    public void onFishHit(RaycastHit hitinfo)
-    {
-        GameObject.Destroy(this.gameObject);
+        Fish newhead = Instantiate(fishHead, transform.position, transform.rotation);
+        Fish newtail = Instantiate(fishTail, transform.position, transform.rotation);
+        newhead.GetComponent<Rigidbody>().AddForce(Vector3.left*2f, ForceMode.Impulse);
+        newtail.GetComponent<Rigidbody>().AddForce(Vector3.right * 2f, ForceMode.Impulse);
+        newhead.GetComponent<Rigidbody>().AddForce(Vector3.up * 5f, ForceMode.Impulse);
+        newtail.GetComponent<Rigidbody>().AddForce(Vector3.up * 5f, ForceMode.Impulse);
     }
 }

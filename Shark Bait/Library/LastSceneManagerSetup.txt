@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Shark Bait.unity
+- path: Assets/Fish Ninja.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
